@@ -4,28 +4,28 @@ Livox ROS Driver 2 is the 2nd-generation driver package used to connect LiDAR pr
 
 ## ATTENTION
 
-本仓库为深圳北理莫斯科大学北极熊战队内部修改版，非原版 livox_ros_driver2 。
+`本仓库为深圳北理莫斯科大学北极熊战队内部修改版`，非原版 livox_ros_driver2 。
 
-相较于原版，修改了消息发布机制和 ```MID360_config.json``` 的 ip
+相较于原版，修改了消息发布机制和 `MID360_config.json` 的 ip
 
-```ros2 launch msg_MID360_launch.py``` 时会同时发布 ```CustomMsg``` 和 ```PointCloud2``` 两种类型消息。
+`ros2 launch msg_MID360_launch.py` 时会同时发布 `CustomMsg` 和 `PointCloud2` 两种类型消息。
 
- **Topic name**           | **Type**                        | **Note**
-:------------------------:|:-------------------------------:|:--------------:
- /livox/lidar             | livox_ros_driver2/msg/CustomMsg | mid360 自定义消息类型
- /livox/lidar/pointcloud | sensor_msgs/msg/PointCloud2     | ROS2 点云消息格式
- /livox/imu               | sensor_msgs/msg/Imu             | mid360 机内 imu
+|     **Topic name**      |            **Type**             |       **Note**        |
+| :---------------------: | :-----------------------------: | :-------------------: |
+|      /livox/lidar       | livox_ros_driver2/msg/CustomMsg | mid360 自定义消息类型 |
+| /livox/lidar/pointcloud |   sensor_msgs/msg/PointCloud2   |   ROS2 点云消息格式   |
+|       /livox/imu        |       sensor_msgs/msg/Imu       |    mid360 机内 imu    |
 
 本功能包已内置预编译的 Livox SDK2，无需再次克隆编译安装。
 
 ## 1. Preparation
 
-  **Note :**
-  As a debugging tool, Livox ROS Driver is not recommended for mass production but limited to test scenarios. You should optimize the code based on the original source to meet your various needs.
+**Note :**
+As a debugging tool, Livox ROS Driver is not recommended for mass production but limited to test scenarios. You should optimize the code based on the original source to meet your various needs.
 
 ### 1.1 OS requirements
 
-* Ubuntu 22.04 for ROS2 Humble;
+- Ubuntu 22.04 for ROS2 Humble;
 
   **Tips:**
 
@@ -48,15 +48,15 @@ Desktop-Full installation is recommend.
 git clone https://github.com/SMBU-PolarBear-Robotics-Team/livox_ros_driver2.git
 ```
 
-  **Note :**
+**Note :**
 
-  Be sure to clone the source code in a '[work_space]/src/' folder (as shown above), otherwise compilation errors will occur due to the compilation tool restriction.
+Be sure to clone the source code in a '[work_space]/src/' folder (as shown above), otherwise compilation errors will occur due to the compilation tool restriction.
 
 ### 2.2 Build & install the Livox-SDK2
 
-  **Note :**
+**Note :**
 
-  Please follow the guidance of installation in the [Livox-SDK2/README.md](https://github.com/Livox-SDK/Livox-SDK2/blob/master/README.md)
+Please follow the guidance of installation in the [Livox-SDK2/README.md](https://github.com/Livox-SDK/Livox-SDK2/blob/master/README.md)
 
 ### 2.3 Build the Livox ROS Driver 2
 
@@ -73,9 +73,9 @@ source install/setup.sh
 ros2 launch livox_ros_driver2 [launch file]
 ```
 
-in which,  
+in which,
 
-* **[launch file]** : is the ROS2 launch file you want to use; the 'launch_ROS2' folder contains several launch samples for your reference.
+- **[launch file]** : is the ROS2 launch file you want to use; the 'launch_ROS2' folder contains several launch samples for your reference.
 
 A rviz launch example for HAP LiDAR would be:
 
@@ -89,69 +89,69 @@ ros2 launch livox_ros_driver2 rviz_HAP_launch.py
 
 Launch files of ROS are in the "ws_livox/src/livox_ros_driver2/launch_ROS1" directory and launch files of ROS2 are in the "ws_livox/src/livox_ros_driver2/launch_ROS2" directory. Different launch files have different configuration parameter values and are used in different scenarios:
 
-| launch file name          | Description                                                  |
-| ------------------------- | ------------------------------------------------------------ |
-| rviz_HAP.launch   | Connect to HAP LiDAR device<br>Publish pointcloud2 format  data<br>Autoload rviz |
-| msg_HAP.launch     | Connect to HAP LiDAR device<br>Publish livox customized pointcloud data|
-| rviz_MID360.launch        | Connect to MID360 LiDAR device<br>Publish pointcloud2 format data <br>Autoload rviz|
-| msg_MID360.launch          | Connect to MID360 LiDAR device<br>Publish livox customized pointcloud data |
-| rviz_mixed.launch    | Connect to HAP and MID360 LiDAR device<br>Publish pointcloud2 format data <br>Autoload rviz|
-| msg_mixed.launch      | Connect to HAP and MID360 LiDAR device<br>Publish livox customized pointcloud data |
+| launch file name   | Description                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------- |
+| rviz_HAP.launch    | Connect to HAP LiDAR device<br>Publish pointcloud2 format data<br>Autoload rviz             |
+| msg_HAP.launch     | Connect to HAP LiDAR device<br>Publish livox customized pointcloud data                     |
+| rviz_MID360.launch | Connect to MID360 LiDAR device<br>Publish pointcloud2 format data <br>Autoload rviz         |
+| msg_MID360.launch  | Connect to MID360 LiDAR device<br>Publish livox customized pointcloud data                  |
+| rviz_mixed.launch  | Connect to HAP and MID360 LiDAR device<br>Publish pointcloud2 format data <br>Autoload rviz |
+| msg_mixed.launch   | Connect to HAP and MID360 LiDAR device<br>Publish livox customized pointcloud data          |
 
 ### 3.2 Livox ros driver 2 internal main parameter configuration instructions
 
 All internal parameters of Livox_ros_driver2 are in the launch file. Below are detailed descriptions of the three commonly used parameters :
 
-| Parameter    | Detailed description                                         | Default |
-| ------------ | ------------------------------------------------------------ | ------- |
-| publish_freq | Set the frequency of point cloud publish <br>Floating-point data type, recommended values 5.0, 10.0, 20.0, 50.0, etc. The maximum publish frequency is 100.0 Hz.| 10.0    |
-| multi_topic  | If the LiDAR device has an independent topic to publish pointcloud data<br>0 -- All LiDAR devices use the same topic to publish pointcloud data<br>1 -- Each LiDAR device has its own topic to publish point cloud data | 0       |
+| Parameter    | Detailed description                                                                                                                                                                                                           | Default |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+| publish_freq | Set the frequency of point cloud publish <br>Floating-point data type, recommended values 5.0, 10.0, 20.0, 50.0, etc. The maximum publish frequency is 100.0 Hz.                                                               | 10.0    |
+| multi_topic  | If the LiDAR device has an independent topic to publish pointcloud data<br>0 -- All LiDAR devices use the same topic to publish pointcloud data<br>1 -- Each LiDAR device has its own topic to publish point cloud data        | 0       |
 | xfer_format  | Set pointcloud format<br>0 -- Livox pointcloud2(PointXYZRTLT) pointcloud format<br>1 -- Livox customized pointcloud format<br>2 -- Standard pointcloud2 (pcl :: PointXYZI) pointcloud format in the PCL library (just for ROS) | 0       |
 
-  **Note :**
+**Note :**
 
-  Other parameters not mentioned in this table are not suggested to be changed unless fully understood.
+Other parameters not mentioned in this table are not suggested to be changed unless fully understood.
 
-&ensp;&ensp;&ensp;&ensp;***Livox_ros_driver2 pointcloud data detailed description :***
+&ensp;&ensp;&ensp;&ensp;**_Livox_ros_driver2 pointcloud data detailed description :_**
 
 1. Livox pointcloud2 (PointXYZRTLT) point cloud format, as follows :
 
-    ```c
-    float32 x               # X axis, unit:m
-    float32 y               # Y axis, unit:m
-    float32 z               # Z axis, unit:m
-    float32 intensity       # the value is reflectivity, 0.0~255.0
-    uint8   tag             # livox tag
-    uint8   line            # laser number in lidar
-    float64 timestamp       # Timestamp of point
-    ```
+   ```c
+   float32 x               # X axis, unit:m
+   float32 y               # Y axis, unit:m
+   float32 z               # Z axis, unit:m
+   float32 intensity       # the value is reflectivity, 0.0~255.0
+   uint8   tag             # livox tag
+   uint8   line            # laser number in lidar
+   float64 timestamp       # Timestamp of point
+   ```
 
-      **Note :**
+   **Note :**
 
-      The number of points in the frame may be different, but each point provides a timestamp.
+   The number of points in the frame may be different, but each point provides a timestamp.
 
 2. Livox customized data package format, as follows :
 
-    ```c
-    std_msgs/Header header     # ROS standard message header
-    uint64          timebase   # The time of first point
-    uint32          point_num  # Total number of pointclouds
-    uint8           lidar_id   # Lidar device id number
-    uint8[3]        rsvd       # Reserved use
-    CustomPoint[]   points     # Pointcloud data
-    ```
+   ```c
+   std_msgs/Header header     # ROS standard message header
+   uint64          timebase   # The time of first point
+   uint32          point_num  # Total number of pointclouds
+   uint8           lidar_id   # Lidar device id number
+   uint8[3]        rsvd       # Reserved use
+   CustomPoint[]   points     # Pointcloud data
+   ```
 
-    &ensp;&ensp;&ensp;&ensp;Customized Point Cloud (CustomPoint) format in the above customized data package :
+   &ensp;&ensp;&ensp;&ensp;Customized Point Cloud (CustomPoint) format in the above customized data package :
 
-    ```c
-    uint32  offset_time     # offset time relative to the base time
-    float32 x               # X axis, unit:m
-    float32 y               # Y axis, unit:m
-    float32 z               # Z axis, unit:m
-    uint8   reflectivity    # reflectivity, 0~255
-    uint8   tag             # livox tag
-    uint8   line            # laser number in lidar
-    ```
+   ```c
+   uint32  offset_time     # offset time relative to the base time
+   float32 x               # X axis, unit:m
+   float32 y               # Y axis, unit:m
+   float32 z               # Z axis, unit:m
+   uint8   reflectivity    # reflectivity, 0~255
+   uint8   tag             # livox tag
+   uint8   line            # laser number in lidar
+   ```
 
 3. The standard pointcloud2 (pcl :: PointXYZI) format in the PCL library (only ROS can publish):
 
@@ -159,152 +159,152 @@ All internal parameters of Livox_ros_driver2 are in the launch file. Below are d
 
 ## 4. LiDAR config
 
-LiDAR Configurations (such as ip, port, data type... etc.) can be set via a json-style config file. Config files for single HAP, Mid360 and mixed-LiDARs are in the "config" folder. The parameter naming *'user_config_path'* in launch files indicates such json file path.
+LiDAR Configurations (such as ip, port, data type... etc.) can be set via a json-style config file. Config files for single HAP, Mid360 and mixed-LiDARs are in the "config" folder. The parameter naming _'user_config_path'_ in launch files indicates such json file path.
 
 1. Follow is a configuration example for HAP LiDAR (located in config/HAP_config.json):
 
-    ```json
-    {
-      "lidar_summary_info" : {
-        "lidar_type": 8  # protocol type index, please don't revise this value
-      },
-      "HAP": {
-        "device_type" : "HAP",
-        "lidar_ipaddr": "",
-        "lidar_net_info" : {
-          "cmd_data_port": 56000,  # command port
-          "push_msg_port": 0,
-          "point_data_port": 57000,
-          "imu_data_port": 58000,
-          "log_data_port": 59000
-        },
-        "host_net_info" : {
-          "cmd_data_ip" : "192.168.1.5",  # host ip (it can be revised)
-          "cmd_data_port": 56000,
-          "push_msg_ip": "",
-          "push_msg_port": 0,
-          "point_data_ip": "192.168.1.5",  # host ip
-          "point_data_port": 57000,
-          "imu_data_ip" : "192.168.1.5",  # host ip
-          "imu_data_port": 58000,
-          "log_data_ip" : "",
-          "log_data_port": 59000
-        }
-      },
-      "lidar_configs" : [
-        {
-          "ip" : "192.168.1.100",  # ip of the LiDAR you want to config
-          "pcl_data_type" : 1,
-          "pattern_mode" : 0,
-          "blind_spot_set" : 50,
-          "extrinsic_parameter" : {
-            "roll": 0.0,
-            "pitch": 0.0,
-            "yaw": 0.0,
-            "x": 0,
-            "y": 0,
-            "z": 0
-          }
-        }
-      ]
-    }
-    ```
+   ```json
+   {
+     "lidar_summary_info" : {
+       "lidar_type": 8  # protocol type index, please don't revise this value
+     },
+     "HAP": {
+       "device_type" : "HAP",
+       "lidar_ipaddr": "",
+       "lidar_net_info" : {
+         "cmd_data_port": 56000,  # command port
+         "push_msg_port": 0,
+         "point_data_port": 57000,
+         "imu_data_port": 58000,
+         "log_data_port": 59000
+       },
+       "host_net_info" : {
+         "cmd_data_ip" : "192.168.1.5",  # host ip (it can be revised)
+         "cmd_data_port": 56000,
+         "push_msg_ip": "",
+         "push_msg_port": 0,
+         "point_data_ip": "192.168.1.5",  # host ip
+         "point_data_port": 57000,
+         "imu_data_ip" : "192.168.1.5",  # host ip
+         "imu_data_port": 58000,
+         "log_data_ip" : "",
+         "log_data_port": 59000
+       }
+     },
+     "lidar_configs" : [
+       {
+         "ip" : "192.168.1.100",  # ip of the LiDAR you want to config
+         "pcl_data_type" : 1,
+         "pattern_mode" : 0,
+         "blind_spot_set" : 50,
+         "extrinsic_parameter" : {
+           "roll": 0.0,
+           "pitch": 0.0,
+           "yaw": 0.0,
+           "x": 0,
+           "y": 0,
+           "z": 0
+         }
+       }
+     ]
+   }
+   ```
 
-    The parameter attributes in the above json file are described in the following table :
+   The parameter attributes in the above json file are described in the following table :
 
-    LiDAR configuration parameter
+   LiDAR configuration parameter
 
-    | Parameter                  | Type    | Description                                                  | Default         |
-    | :------------------------- | ------- | ------------------------------------------------------------ | --------------- |
-    | ip             | String  | Ip of the LiDAR you want to config | 192.168.1.100 |
-    | pcl_data_type             | Int | Choose the resolution of the point cloud data to send<br>1 -- Cartesian coordinate data (32 bits)<br>2 -- Cartesian coordinate data (16 bits) <br>3 --Spherical coordinate data| 1           |
-    | pattern_mode                | Int     | Space scan pattern<br>0 -- non-repeating scanning pattern mode<br>1 -- repeating scanning pattern mode <br>2 -- repeating scanning pattern mode (low scanning rate) | 0               |
-    | blind_spot_set (Only for HAP LiDAR)                 | Int     | Set blind spot<br>Range from 50 cm to 200 cm               | 50               |
-    | extrinsic_parameter |      | Set extrinsic parameter<br> The data types of "roll" "picth" "yaw" are float <br>  The data types of "x" "y" "z" are int<br>               |
+   | Parameter                           | Type   | Description                                                                                                                                                                     | Default       |
+   | :---------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+   | ip                                  | String | Ip of the LiDAR you want to config                                                                                                                                              | 192.168.1.100 |
+   | pcl_data_type                       | Int    | Choose the resolution of the point cloud data to send<br>1 -- Cartesian coordinate data (32 bits)<br>2 -- Cartesian coordinate data (16 bits) <br>3 --Spherical coordinate data | 1             |
+   | pattern_mode                        | Int    | Space scan pattern<br>0 -- non-repeating scanning pattern mode<br>1 -- repeating scanning pattern mode <br>2 -- repeating scanning pattern mode (low scanning rate)             | 0             |
+   | blind_spot_set (Only for HAP LiDAR) | Int    | Set blind spot<br>Range from 50 cm to 200 cm                                                                                                                                    | 50            |
+   | extrinsic_parameter                 |        | Set extrinsic parameter<br> The data types of "roll" "picth" "yaw" are float <br> The data types of "x" "y" "z" are int<br>                                                     |
 
-    For more infomation about the HAP config, please refer to:
-    [HAP Config File Description](https://github.com/Livox-SDK/Livox-SDK2/wiki/hap-config-file-description)
+   For more infomation about the HAP config, please refer to:
+   [HAP Config File Description](https://github.com/Livox-SDK/Livox-SDK2/wiki/hap-config-file-description)
 
 2. When connecting multiple LiDARs, add objects corresponding to different LiDARs to the "lidar_configs" array. Examples of mixed-LiDARs config file contents are as follows :
 
-    ```json
-    {
-      "lidar_summary_info" : {
-        "lidar_type": 8  # protocol type index, please don't revise this value
-      },
-      "HAP": {
-        "lidar_net_info" : {  # HAP ports, please don't revise these values
-          "cmd_data_port": 56000,  # HAP command port
-          "push_msg_port": 0,
-          "point_data_port": 57000,
-          "imu_data_port": 58000,
-          "log_data_port": 59000
-        },
-        "host_net_info" : {
-          "cmd_data_ip" : "192.168.1.5",  # host ip
-          "cmd_data_port": 56000,
-          "push_msg_ip": "",
-          "push_msg_port": 0,
-          "point_data_ip": "192.168.1.5",  # host ip
-          "point_data_port": 57000,
-          "imu_data_ip" : "192.168.1.5",  # host ip
-          "imu_data_port": 58000,
-          "log_data_ip" : "",
-          "log_data_port": 59000
-        }
-      },
-      "MID360": {
-        "lidar_net_info" : {  # Mid360 ports, please don't revise these values
-          "cmd_data_port": 56100,  # Mid360 command port
-          "push_msg_port": 56200,
-          "point_data_port": 56300,
-          "imu_data_port": 56400,
-          "log_data_port": 56500
-        },
-        "host_net_info" : {
-          "cmd_data_ip" : "192.168.1.5",  # host ip
-          "cmd_data_port": 56101,
-          "push_msg_ip": "192.168.1.5",  # host ip
-          "push_msg_port": 56201,
-          "point_data_ip": "192.168.1.5",  # host ip
-          "point_data_port": 56301,
-          "imu_data_ip" : "192.168.1.5",  # host ip
-          "imu_data_port": 56401,
-          "log_data_ip" : "",
-          "log_data_port": 56501
-        }
-      },
-      "lidar_configs" : [
-        {
-          "ip" : "192.168.1.100",  # ip of the HAP you want to config
-          "pcl_data_type" : 1,
-          "pattern_mode" : 0,
-          "blind_spot_set" : 50,
-          "extrinsic_parameter" : {
-            "roll": 0.0,
-            "pitch": 0.0,
-            "yaw": 0.0,
-            "x": 0,
-            "y": 0,
-            "z": 0
-          }
-        },
-        {
-          "ip" : "192.168.1.12",  # ip of the Mid360 you want to config
-          "pcl_data_type" : 1,
-          "pattern_mode" : 0,
-          "extrinsic_parameter" : {
-            "roll": 0.0,
-            "pitch": 0.0,
-            "yaw": 0.0,
-            "x": 0,
-            "y": 0,
-            "z": 0
-          }
-        }
-      ]
-    }
-    ```
+   ```json
+   {
+     "lidar_summary_info" : {
+       "lidar_type": 8  # protocol type index, please don't revise this value
+     },
+     "HAP": {
+       "lidar_net_info" : {  # HAP ports, please don't revise these values
+         "cmd_data_port": 56000,  # HAP command port
+         "push_msg_port": 0,
+         "point_data_port": 57000,
+         "imu_data_port": 58000,
+         "log_data_port": 59000
+       },
+       "host_net_info" : {
+         "cmd_data_ip" : "192.168.1.5",  # host ip
+         "cmd_data_port": 56000,
+         "push_msg_ip": "",
+         "push_msg_port": 0,
+         "point_data_ip": "192.168.1.5",  # host ip
+         "point_data_port": 57000,
+         "imu_data_ip" : "192.168.1.5",  # host ip
+         "imu_data_port": 58000,
+         "log_data_ip" : "",
+         "log_data_port": 59000
+       }
+     },
+     "MID360": {
+       "lidar_net_info" : {  # Mid360 ports, please don't revise these values
+         "cmd_data_port": 56100,  # Mid360 command port
+         "push_msg_port": 56200,
+         "point_data_port": 56300,
+         "imu_data_port": 56400,
+         "log_data_port": 56500
+       },
+       "host_net_info" : {
+         "cmd_data_ip" : "192.168.1.5",  # host ip
+         "cmd_data_port": 56101,
+         "push_msg_ip": "192.168.1.5",  # host ip
+         "push_msg_port": 56201,
+         "point_data_ip": "192.168.1.5",  # host ip
+         "point_data_port": 56301,
+         "imu_data_ip" : "192.168.1.5",  # host ip
+         "imu_data_port": 56401,
+         "log_data_ip" : "",
+         "log_data_port": 56501
+       }
+     },
+     "lidar_configs" : [
+       {
+         "ip" : "192.168.1.100",  # ip of the HAP you want to config
+         "pcl_data_type" : 1,
+         "pattern_mode" : 0,
+         "blind_spot_set" : 50,
+         "extrinsic_parameter" : {
+           "roll": 0.0,
+           "pitch": 0.0,
+           "yaw": 0.0,
+           "x": 0,
+           "y": 0,
+           "z": 0
+         }
+       },
+       {
+         "ip" : "192.168.1.12",  # ip of the Mid360 you want to config
+         "pcl_data_type" : 1,
+         "pattern_mode" : 0,
+         "extrinsic_parameter" : {
+           "roll": 0.0,
+           "pitch": 0.0,
+           "yaw": 0.0,
+           "x": 0,
+           "y": 0,
+           "z": 0
+         }
+       }
+     ]
+   }
+   ```
 
 3. when multiple nics on the host connect to multiple LiDARs, you need to add objects corresponding to different LiDARs to the lidar_configs array. Run different luanch files separately, and the following is an example of mixing lidar configuration file contents:
 
@@ -318,7 +318,7 @@ LiDAR Configurations (such as ip, port, data type... etc.) can be set via a json
     "MID360": {
         "lidar_net_info": {
             "cmd_data_port": 56100, # command port
-            "push_msg_port": 56200, 
+            "push_msg_port": 56200,
             "point_data_port": 56300,
             "imu_data_port": 56400,
             "log_data_port": 56500
@@ -363,7 +363,7 @@ LiDAR Configurations (such as ip, port, data type... etc.) can be set via a json
     "MID360": {
         "lidar_net_info": {
             "cmd_data_port": 56100, # command port
-            "push_msg_port": 56200, 
+            "push_msg_port": 56200,
             "point_data_port": 56300,
             "imu_data_port": 56400,
             "log_data_port": 56500
@@ -416,7 +416,7 @@ LiDAR Configurations (such as ip, port, data type... etc.) can be set via a json
     <arg name="msg_frame_id" default="livox_frame"/>
     <arg name="lidar_bag" default="true"/>
     <arg name="imu_bag" default="true"/>
-    <!--user configure parameters for ros end--> 
+    <!--user configure parameters for ros end-->
     <param name="xfer_format" value="$(arg xfer_format)"/>
     <param name="multi_topic" value="$(arg multi_topic)"/>
     <param name="data_src" value="$(arg data_src)"/>
@@ -460,7 +460,7 @@ LiDAR Configurations (such as ip, port, data type... etc.) can be set via a json
     <arg name="msg_frame_id" default="livox_frame"/>
     <arg name="lidar_bag" default="true"/>
     <arg name="imu_bag" default="true"/>
-    <!--user configure parameters for ros end--> 
+    <!--user configure parameters for ros end-->
     <param name="xfer_format" value="$(arg xfer_format)"/>
     <param name="multi_topic" value="$(arg multi_topic)"/>
     <param name="data_src" value="$(arg data_src)"/>
@@ -488,9 +488,9 @@ LiDAR Configurations (such as ip, port, data type... etc.) can be set via a json
 
 ## 5. Supported LiDAR list
 
-* HAP
-* Mid360
-* (more types are comming soon...)
+- HAP
+- Mid360
+- (more types are comming soon...)
 
 ## 6. FAQ
 
@@ -502,13 +502,13 @@ Please check the "Global Options - Fixed Frame" field in the RViz "Display" pann
 
 Please add '/usr/local/lib' to the env LD_LIBRARY_PATH.
 
-* If you want to add to current terminal:
+- If you want to add to current terminal:
 
   ```shell
   export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
   ```
 
-* If you want to add to current user:
+- If you want to add to current user:
 
   ```shell
   vim ~/.bashrc
